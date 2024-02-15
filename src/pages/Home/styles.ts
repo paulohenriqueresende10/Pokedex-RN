@@ -49,7 +49,10 @@ ${({ theme }) => css`
 export const Input = styled.TextInput`
   ${({ theme }) => css`
       color: ${theme.colors.text};
-      border-radius: 10px
+      border-radius: 10px;
+      border: 1px solid black;
+      padding: 20px;
+      margin-top: 15px;
     `}
 `;
 
