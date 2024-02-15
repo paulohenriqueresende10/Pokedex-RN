@@ -42,10 +42,10 @@ export function Home() {
 
   const [load, setLoad] = useState<boolean>(true);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [filterPokemon, setFilterPokemon] = useState<string>();
+  const [searchQuery, setsearchQuery] = useState<string>('');
   const [limit, setLimit] = useState<number>(MAX_LIMIT);
 
-  async function getPokemons(): Promise<void> {
+  const getPokemons = async(): Promise<void> => {
     try {
       const response = await api.get(`/pokemon/?offset=0&limit=${limit}`);
       const { results } = response.data;
@@ -78,15 +78,17 @@ export function Home() {
   }, []);
 
   useEffect(() => {
+    if (searchQuery === '') {
+        getPokemons();
+        return;
+    }
     const filteredPokemons = pokemons.filter(
-      (pokemon: Pokemon) => pokemon.name === filterPokemon
+      (pokemon) => pokemon.name.includes(searchQuery)
     );
-
     setPokemons(filteredPokemons);
+  }, [searchQuery]);
 
-  }, [filterPokemon]);
-
-  async function getMoreInfoAboutPokemonsByUrl(url: string): Promise<Request> {
+  const getMoreInfoAboutPokemonsByUrl = async (url: string): Promise<Request> => {
     const response = await api.get(url);
 
     const { id, types } = response.data as Request;
@@ -94,11 +96,18 @@ export function Home() {
     return { id, types };
   }
 
-  function handleNavigationPokemonDetail(pokemonId: number) {
+  const handleNavigationPokemonDetail = (pokemonId: number): void => {
     navigate('About', {
       pokemonId,
     });
   }
+
+  const handleonendReached = (): void => {
+    if (searchQuery === '') {
+      getPokemons();
+    }
+  }
+
   return load ? (
     <S.LoadingScreen>
       <Load />
@@ -108,7 +117,7 @@ export function Home() {
       <S.Container>
         <FlatList
           onEndReachedThreshold={0.2}
-          onEndReached={getPokemons}
+          onEndReached={handleonendReached}
           ListHeaderComponent={
             <>
               <S.Header source={pokeballImage} />
@@ -116,7 +125,11 @@ export function Home() {
               <S.Text>Procure Pokémon pelo nome ou usando o número Pokédex Nacional.</S.Text>
               <S.Input 
                 placeholder='Que Pokémon você está procurando?'
-                onChangeText={(text) => setFilterPokemon(text)}
+                onChangeText={(text) => setsearchQuery(text)}
+                clearButtonMode='always'
+                autoCapitalize='none'
+                autoCorrect={false}
+                value={searchQuery}
               />
             </>
           }
