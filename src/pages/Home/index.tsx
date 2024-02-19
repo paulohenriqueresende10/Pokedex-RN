@@ -127,15 +127,20 @@ export function Home() {
             <>
               <S.Header source={pokeballImage} />
               <S.Title> Pokédex</S.Title>
-              <S.Text>Procure Pokémon pelo nome ou usando o número Pokédex Nacional.</S.Text>     
-                <S.Input 
-                  placeholder='Que Pokémon você está procurando?'
-                  onChangeText={(text) => setsearchQuery(text)}
-                  clearButtonMode='always'
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  value={searchQuery}
-                />
+              <S.Text>Procure Pokémon pelo nome ou usando o número Pokédex Nacional.</S.Text>
+              <S.WrapperContent>
+                <S.WrapperSearchBar>
+                  <EvilIcons name="search" size={24} color="#050617"/>    
+                  <S.Input 
+                    placeholder='Que Pokémon você está procurando?'
+                    onChangeText={(text) => setsearchQuery(text)}
+                    clearButtonMode='always'
+                    autoCapitalize='none'               
+                    autoCorrect={false}
+                    value={searchQuery}
+                  />
+                </S.WrapperSearchBar>
+              </S.WrapperContent>
             </>
           }
           contentContainerStyle={{

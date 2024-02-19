@@ -47,11 +47,24 @@ ${({ theme }) => css`
 
 export const Input = styled.TextInput`
   ${({ theme }) => css`
+      flex: 1;
       color: ${theme.colors.text};
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 15px;
-      background-color: #F2F2F2;
     `}
+`;
+
+export const WrapperSearchBar = styled.View`
+    padding: 20px;
+    flex: 1;
+    flex-direction: row;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+`;
+
+export const WrapperContent = styled.View`
+    margin-top: 15px;
+    flex-direction: row;
 `;
 
