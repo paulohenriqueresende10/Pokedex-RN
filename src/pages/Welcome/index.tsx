@@ -1,12 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-
 import AnimatedLottieView from 'lottie-react-native';
-
-import pokemonAnimation from './pokemon.json';
-
 import * as S from './styles';
 
 type RootStackParamList = {
@@ -25,7 +20,7 @@ export function Welcome() {
       <S.Content>
         <S.WrapperIcon>
           <S.IconContent>
-            <AnimatedLottieView autoPlay source={pokemonAnimation} loop />
+            <AnimatedLottieView autoPlay source={require('./pokemon.json')} loop />
           </S.IconContent>
         </S.WrapperIcon>
 

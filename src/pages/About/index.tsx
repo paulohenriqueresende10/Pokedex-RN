@@ -78,7 +78,7 @@ export function About() {
     async function getPokemonDetail(): Promise<void> {
       try {
         const response = await api.get(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonId}/`,
+          `/pokemon/${pokemonId}/`,
         );
 
         const { stats, abilities, id, name, types } = response.data;
@@ -149,7 +149,7 @@ export function About() {
       </S.Header>
 
       <S.Container>
-        <S.Title type={pokemon.types[0].type.name}> Base States </S.Title>
+        <S.Title type={pokemon.types[0].type.name}> Status base </S.Title>
 
         {pokemon.stats.map(attribute => (
           <S.StatusBar key={attribute.stat.name}>
@@ -167,7 +167,7 @@ export function About() {
           </S.StatusBar>
         ))}
 
-        <S.Title type={pokemon.types[0].type.name}> Abilities </S.Title>
+        <S.Title type={pokemon.types[0].type.name}> Habilidades </S.Title>
         {pokemon.abilities.map(abilityItem => (
           <S.Ability key={abilityItem.ability.name}>
             {abilityItem.ability.name}
