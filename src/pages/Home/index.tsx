@@ -37,7 +37,8 @@ export interface Request {
 }
 
 export function Home() {
-  const MAX_LIMIT = 20;
+  const MAX_LIMIT = 1080;
+  const PAGE_SIZE = 20;
   
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -45,11 +46,11 @@ export function Home() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
   const [searchQuery, setsearchQuery] = useState<string>('');
-  const [limit, setLimit] = useState<number>(MAX_LIMIT);
+  const [limit, setLimit] = useState<number>(0);
 
   const getPokemons = async(): Promise<void> => {
     try {
-      const response = await api.get(`/pokemon/${searchQuery}?offset=0&limit=${limit}`);
+      const response = await api.get(`/pokemon/?offset=0&limit=${MAX_LIMIT}`);
       const { results } = response.data;
 
       const payloadPokemons: Pokemon[] = await Promise.all(
@@ -67,7 +68,8 @@ export function Home() {
       );
 
       setPokemons(payloadPokemons);
-      setFilteredPokemons(payloadPokemons);
+      setFilteredPokemons(payloadPokemons.slice(0, PAGE_SIZE));
+      setLimit((prev) => prev + PAGE_SIZE)
     } catch (err) {    
       Alert.alert('ops, algo de errado aconteceu, tente mais tarde');
     } finally {
@@ -81,8 +83,8 @@ export function Home() {
 
   useEffect(() => {
     if (searchQuery === '') {
-        setLimit(MAX_LIMIT);
-        getPokemons();
+        setLimit(PAGE_SIZE);
+        setFilteredPokemons(pokemons.slice(0, PAGE_SIZE));
         return;
     }
     const filteredPokemons = pokemons.filter(
@@ -108,8 +110,10 @@ export function Home() {
 
   const handleonendReached = (): void => {
     if (searchQuery === '') {
-      setLimit((prev) => prev + MAX_LIMIT);
-      getPokemons();
+      const newLimit = limit + PAGE_SIZE;
+
+      setFilteredPokemons(pokemons.slice(0, newLimit));
+      setLimit(newLimit);
     }
   }
 
