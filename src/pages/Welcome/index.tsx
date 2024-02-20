@@ -20,7 +20,7 @@ export function Welcome() {
       <S.Content>
         <S.WrapperIcon>
           <S.IconContent>
-            <AnimatedLottieView autoPlay source={require('./pokemon.json')} loop />
+            <AnimatedLottieView style={{flex:1}} autoPlay source={require('./pokemon.json')} loop />
           </S.IconContent>
         </S.WrapperIcon>
 
